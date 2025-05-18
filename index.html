@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Discover the Cosmos</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: black;
+    }
+
+    /* Navigation bar styles */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 10;
+    }
+
+    nav a {
+      color: #00ccff;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #0077ff;
+    }
+
+    #space-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #00111a, #000011);
+      overflow: hidden;
+    }
+
+    /* Nebula glow layers */
+    #space-container::before, #space-container::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.1), transparent 70%),
+                  radial-gradient(circle at 70% 70%, rgba(255, 0, 255, 0.08), transparent 70%);
+      animation: rotate 120s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Stars */
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      opacity: 0.8;
+      animation: twinkle 4s infinite ease-in-out;
+      box-shadow: 0 0 2px rgba(255, 255, 255, 0.6);
+      z-index: 1;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Shooting Stars */
+    .shooting-star {
+      position: absolute;
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(to left, white, rgba(255,255,255,0));
+      transform: rotate(45deg);
+      opacity: 0;
+      animation: shoot 2s ease-in-out forwards;
+      z-index: 2;
+    }
+
+    @keyframes shoot {
+      0% {
+        transform: translate(0, 0) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(800px, 800px) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    /* Center Text */
+    .center-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 3;
+      padding: 0 10px;
+    }
+
+    .center-content h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 20px #00ccff;
+      color: #00ccff;
+    }
+
+    .center-content p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    #explore-btn {
+      padding: 12px 24px;
+      background-color: #0055cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #explore-btn:hover {
+      background-color: #0077ff;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .center-content h1 {
+        font-size: 2.2rem;
+      }
+
+      .center-content p {
+        font-size: 1rem;
+      }
+
+      #explore-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .center-content h1 {
+        font-size: 1.8rem;
+      }
+
+      .center-content p {
+        font-size: 0.95rem;
+      }
+
+      #explore-btn {
+        font-size: 0.95rem;
+        padding: 8px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="story.html">Storytelling</a>
+    <!-- Add more links here as needed -->
+  </nav>
+
+  <div id="space-container">
+    <div class="center-content">
+      <h1>Discover the Cosmos</h1>
+      <p>Embark on a journey to explore infinite possibilities.</p>
+      <button id="explore-btn" onclick="location.href='dialog.html'">Start Adventure</button>
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById("space-container");
+
+    // Create stars
+    for (let i = 0; i < 150; i++) {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.top = ` ${Math.random() * window.innerHeight}px `;
+      star.style.left = ` ${Math.random() * window.innerWidth}px `;
+      star.style.animationDelay =` ${Math.random() * 5}s `;
+      container.appendChild(star);
+    }
+
+    // Create shooting stars
+    function createShootingStar() {
+      const star = document.createElement("div");
+      star.classList.add("shooting-star");
+
+      const startX = Math.random() * window.innerWidth * 0.5;
+      const startY = Math.random() * window.innerHeight * 0.5;
+
+      star.style.left = ` ${startX}px `;
+      star.style.top = ` ${startY}px `;
+
+      container.appendChild(star);
+
+      setTimeout(() => {
+        star.remove();
+      }, 2000);
+    }
+
+    setInterval(createShootingStar, 5000);
+  </script>
+</body>
+</html>
