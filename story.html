@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Animated RPG Story</title>
+<style>
+  body {
+    background: #111;
+    color: #eee;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  #return-home {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #b30909b1;
+  border: none;
+  padding: 10px 16px;
+  color: #eee;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+#return-home:hover {
+  background-color: #666;
+}
+  #story-box {
+    background: #222;
+    border: 2px solid #444;
+    padding: 20px;
+    min-height: 300px;
+    white-space: pre-wrap;
+    font-size: 18px;
+    box-shadow: 0 0 20px #08f;
+  }
+  #next-btn {
+    margin-top: 20px;
+    background: #08f;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  #next-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+<body>
+
+<h1>Story</h1>
+<div id="story-box"></div>
+<button id="next-btn">Next</button>
+
+<script>
+  const storyLines = [
+    "the story begins from a room at the top of the 201 building",
+    "[IN DREAM]",
+    "SOMEONE IS CRYING, WHO IS HE?",
+    "SOMEONE: I CHOOSEN YOU.",
+    "thak....thak....thak...",
+    "AF: hey what is the sound of 'thak -thak' [HALF IN SLEEP]",
+    "ALL: we don't know what the sound",
+    "AF: wait first i have to see who is the guy",
+    "SH: hey don't go out first look out the window",
+    "AF: hmm.",
+    "AF: ge..t ..back .....get back.",
+    "AF: [in silent voice] hey guys i think...i think .. it..it... is.. a... zombi.",
+    "ALL: what... what did you say",
+    "[ FEW MOMENTS LATER]",
+    "SH: but how",
+    "IS: yes how",
+    "ALL : let us see",
+    "IS: how is the zombie here",
+    "SH : i don't know may be he came from next to terrace",
+    "AF: NO you mad I'm asking that how this zombie exists.",
+    "AS: and his colour is also different than fictional zombie.",
+    "AF: have you done PhD in zombie",
+    "AF: hey get back ... get back. he is attacking",
+    "SOUND OF WINDOW: [ chhek.... chhek.. chhe  . ]",
+    "AF: bring a stick fast",
+    "SH/IS; .....y..a..ya",
+    "AS : fast",
+    "IS : here is stick. just a minute .. take the stick",
+    "AS: be careful",
+    "SH: hit him at his face",
+    "AF: it doesn't affect",
+    "IS: hit hard",
+    "AF: i don't think that it will work.",
+    "AF: we should caught him by bed sheets",
+    "AF: ok cover the door . i m going to open the door , be careful and ready",
+    "AF: now",
+    "ALL: haaaann...",
+    "AS/IS: we can't handle it push him back",
+    "SH: close the door",
+    "SH: i don't think that we can get out of here.",
+    "AF: the phone isn't working.",
+    "IS: there is no way to get out of here",
+    "AF: we should try to break the floor, this is the only way to get out of here.",
+    "AS: but how.",
+    "AF: yes how, if we make noise many of the zombies may come here",
+    "SH: we can break it by using a rod or by scorching the floor. so that less noise will make",
+    "IS: we should try it",
+    "[FEW HOURS LATER]",
+    "IS: we can't break it, from three hours we are only able to make a hole in the floor.",
+    "SH: I'm thirsty, i need some water.",
+    "AF: we should rest.",
+    "[FEW MOMENTS LATER]",
+    "SH: hey what is that black fog, it is coming from below",
+    "IS: it does not smell like fire, it is something different.",
+    "AF: we must have to break the floor.",
+    "[FEW HOURS LATER]",
+    "AF: it is increasing.",
+    "AS: we should not have to stop to break it.",
+    "[ONE HOUR LATER]",
+    "SH: I think we can't.",
+    "IS: we should rest.",
+    "AS: hey... what is the sound.",
+    "AS: it is coming from behind the floor",
+    "AF: The floor is getting broken.",
+    "ALL: aaa.......aa.",
+    "[Opening EYES]",
+    "AF: what was that, it looked like rapid transmulate.",
+    "SH: hey wait where we are, it does not look like our broken house",
+    "GUARD: [IN DIFFERENT LANGUAGE- CATCH HIM]",
+    "AS: who they are",
+    "SH: i think they are coming to capture us.",
+    "IS: i will beat him",
+    "AF: don't you dare",
+    "[THEY CAPTURE HIM AND SPEAKING IN DIFFERENT LANGUAGE, AFTER 30 TO 40 minutes A GIRL AND FEW MORE PEOPLE CAME]",
+    "THE GIRL: ......... to guards",
+    "THE GIRL:................",
+    "THE GIRL: hello my name is kaaneki, can you guys understand what i am talking",
+    "AF:  yeah we can",
+    "AS: where we are, and why we are captured",
+    "KAANEKI: ohh you guys are in temple and after few moments you will get out of it",
+    "SH: in which temple, we are",
+    "KAANEKI: i think we should go.",
+    "IS: first tell me where we are",
+    "KAANEKI: wait for a minute [TALKING TO OTHER IN DIFF LANG]",
+    "SH: what is she saying.",
+    "AF: i also have the same question",
+    "KAANEKI: sorry but it may be complicated, you guys are in different world",
+    "AF: then what happened to my world, there was a zombie and my room was get broken.",
+    "KAANEKI: I,M sorry for your loss but everything will be as before",
+    "PERSON: ....................",
+    "KAANEKI:...................",
+    "AS: are you joking",
+    "KAANEKI: don't worry your home will be fine when you get back",
+    "SH: but how",
+    "KAANEKI : don't worry you guys will get back to your home.",
+    "IS: we said 'how'",
+    "KAANEKI: i already said it is complicated, the only necessity is to get back home.",
+    "[IS TRYING TO ATTACK]",
+    "KAANEKI: [N O MI NO]",
+    "IS: haaann..",
+    "SH/AF/AS: what is this, [can she use magic]",
+    "AF: i will kill you if anything happen to him",
+    "KAANEKI: hey i just pushed back him",
+    "IS: i am alright",
+    "KAANEKI: if you cooperate we will send back to you home",
+    "AF: we have to cooperate",
+    "ALL: ok",
+    "AF: we are cooperating now then why we are still locked",
+    "SH: open us, we are cooperating",
+    "KAANEKI: one sec [diff lang]",
+    "KAANEKI: king is saying that we can't get out of it until we get sure that you guys aren't problem to us",
+    "AS: he is king....",
+    "KAANEKI: oh do not tell you this is our king of MUI, his name is Cartus",
+    "Cartus: .....",
+    "KAANEKI: ............",
+    "AF: what is he saying",
+    "KAANEKI: it's just about your return",
+    "SH/IS: why cartus is looking angry.",
+    "IS/SH: how she can talk to our language",
+    "SH/IS: maybe she is using magic",
+    "IS/SH: then why king isn't talking to us.",
+    "SH: i don't know",
+    "SH: do you notice",
+    "SH: she has a book at his back, it looks like a translation book",
+    "AF: i noticed it",
+    "KAANEKI: ok guys to make the return door to your world, we have to wait for 2 days.",
+    "AS: but why not right now",
+    "KAANEKI: it's because, it takes too much power of our NOR",
+    "IS: what is nor",
+    "KAANEKI: it's enough, now we are getting back to the palace.",
+    "GUARDS: ......",
+    "[GUARDS TOOK ALL garbed person INTO CART]",
+    "AF: this world is totally look like our world.",
+    "AS: yes i agree, but is it our future or past or maybe different universe",
+    "AF: this forest is too natural and look like something dark in it",
+    "SH: stop making joke.",
+    "AF: hey kaaneki can you tell me about this world.",
+    "KAANEKI: sure, why not",
+    "KAANEKI: I don't know much about this world but I will try to explain some other time, now i will tell you about our country.",
+    "OUR COUNTRY HAS TOTAL 9 STATE AND THERE IS A MID STATE WHICH CONNECT TO ALL THE STATE, IN THIS WORLD PEOPLE NORMALLY USE THEIR MAGIC FOR THEIR OWN WORK",
+    "SH: can all people use magic?",
+    "KAANEKI: no, not all people can use magic, few of don't have these powers",
+    "EVERYONE HAS DIFFERENT POWER AND EVERYONE HAS DIFFERENT WAY TO OPERATE THEIR RESPECTIVE",
+    "POWERS, FEW USE SIGN TO OPERATE THEIR POWER AND FEW HAS SOME OTHER WAY.",
+    "SH: can i also use the magical power?",
+    "KAANEKI: i don't think only some same blood can use magic.",
+    "SH: it means only few people can use magic.",
+    "KAANEKI: no, everyone can use magic if they belong to this blood line but few cannot use or 'may be operate'",
+    "SH: is there anyway, where i can use these power?",
+    "KAANEKI: i don't know very much about the magic because i am a researcher.",
+    "AF: are you a researcher, i didn't think that.",
+    "KAANEKI: when we reach and if you guys being true to us then you can explore the town.",
+    "AF: you are quite clever and impressive, you easily make friendly relation to us.",
+    "KAANEKI: i don't think it's all you, who cooperate to us",
+    "KAANEKI: i am little busy so till then enjoy the view of the forest",
+    "[WHEN THEY ARRIVE TO VILLAGE]",
+    "SH: hey i think we arrive",
+    "KAANEKI: this is our town, it is too wide and different cities are connected here",
+    "IS: is there different types of country in this world",
+    "KAANEKI: yes like your world there is many country, some are friend and some are enemy",
+    "AF: same as our world, war, trading, nuclear, but in this world these things are less compare to earth",
+    "SH: why villagers looking angry.",
+    "KAANEKI: ohh sorry i think they consider you as all enemy",
+    "KAANEKI: .......",
+    "AF: what did you say to villagers",
+    "KAANEKI: nothing i just said that they should be friendly to you guys",
+    "IS: are they listening you",
+    "KAANEKI: i think so",
+    "SH: but how",
+    "KAANEKI: [whispering]",
+    "KAANEKI: look at them carefully",
+    "SH: yeah it is true, i don't know why",
+    "AF: i know why they are looking angry",
+    "SH: why",
+    "AF: because you guys are new for this world",
+    "KAANEKI: i think i should get you guys to the castle",
+    "ALL: why",
+    "KAANEKI: because the king asked me to keep you guys at the castle until you are free to move.",
+    "AF: is the king dangerous",
+    "KAANEKI: no he is a very polite guy, but he looks angry",
+    "AF: hey guys welcome to castle",
+    "SH: wow this castle is huge",
+    "KAANEKI: this is our country, its name is MUI.",
+    "AS: hey kaaneki how long we will stay here",
+    "KAANEKI: only two days.",
+    "AF: so what will we do in this castle.",
+    "KAANEKI: don't worry, the king will talk to you tomorrow and after that you can explore the town.",
+    "AS: hey where is the queen.",
+    "KAANEKI: unfortunately king is single.",
+    "AF: so what about the queen.",
+    "KAANEKI: queen has her own castle, we respect her and her power.",
+    "AF: queen of the whole country.",
+    "KAANEKI: yes",
+    "AF: what kind of power she has.",
+    "KAANEKI: hmm it is the type of power which you never think before.",
+    "AF: wow i want to see her.",
+    "KAANEKI: sure, but she rarely come to the castle, sometimes she come to meet the king.",
+    "[TWO DAYS PASSED]",
+    "AF: hey guys today is the last day.",
+    "SH: so what will happen today",
+    "KAANEKI: the king will talk to you and after that you can move outside the castle.",
+    "AF: okay then.",
+    "[AT KING ROOM]",
+    "KING: hey you guys i want to tell you that i have some query about you.",
+    "AF: ask me",
+    "KING: first where you come from",
+    "AF: earth",
+    "KING: i don't believe you.",
+    "AF: why.",
+    "KING: your story doesn't match to anyone",
+    "AF: because we are different.",
+    "KING: i want to check your power.",
+    "AF: power.",
+    "KING: yes magic power",
+    "AF: i don't know about it.",
+    "KING: then tell me what you want.",
+    "AF: i want to get back to my home.",
+    "KING: i want you to be in my country.",
+    "AF: why.",
+    "KING: because i want your power.",
+    "AF: what power.",
+    "KING: you don't know about it but i can see it.",
+    "KING: i can tell you one thing that if you want to get back to your home then you have to pass through one challenge.",
+    "AF: challenge.",
+    "KING: yes",
+    "AF: okay tell me about the challenge.",
+    "KING: you have to fight with my people who has magical power.",
+    "AF: okay.",
+    "[AF TRIES TO FIGHT BUT KING ATTACKS HIM WITH MAGIC]",
+    "KING: HAAN",
+    "AF: HAAAN",
+    "KING: this is just beginning.",
+    "[STORY CONTINUES]"
+  ];
+
+  let currentLine = 0;
+  const storyBox = document.getElementById('story-box');
+  const nextBtn = document.getElementById('next-btn');
+  let typingInterval;
+  let charIndex = 0;
+
+  function typeLine(line, callback) {
+    charIndex = 0;
+    storyBox.textContent = '';
+    clearInterval(typingInterval);
+
+    typingInterval = setInterval(() => {
+      if (charIndex < line.length) {
+        storyBox.textContent += line.charAt(charIndex);
+        charIndex++;
+      } else {
+        clearInterval(typingInterval);
+        callback();
+      }
+    }, 40);
+  }
+
+  function showNextLine() {
+    if (currentLine < storyLines.length) {
+      nextBtn.disabled = true;
+      typeLine(storyLines[currentLine], () => {
+        currentLine++;
+        nextBtn.disabled = false;
+        if (currentLine >= storyLines.length) {
+          nextBtn.disabled = true;
+          nextBtn.textContent = "End of Story";
+        }
+      });
+    }
+  }
+
+  nextBtn.addEventListener('click', showNextLine);
+
+  // Start story on load
+  showNextLine();
+</script>
+
+</body>
+</html>
